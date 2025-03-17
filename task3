@@ -1,0 +1,95 @@
+import java.util.Scanner;
+
+// Class representing the user's bank account
+class BankAccount {
+    private double balance;
+
+    // Constructor to initialize account balance
+    public BankAccount(double initialBalance) {
+        this.balance = initialBalance;
+    }
+
+    // Deposit method
+    public void deposit(double amount) {
+        if (amount > 0) {
+            balance += amount;
+            System.out.println("✅ Successfully deposited $" + amount);
+        } else {
+            System.out.println("❌ Invalid amount. Please enter a positive value.");
+        }
+    }
+
+    // Withdraw method
+    public void withdraw(double amount) {
+        if (amount > 0 && amount <= balance) {
+            balance -= amount;
+            System.out.println("✅ Withdrawal successful! You withdrew $" + amount);
+        } else if (amount > balance) {
+            System.out.println("❌ Insufficient balance! Your balance is $" + balance);
+        } else {
+            System.out.println("❌ Invalid amount. Please enter a positive value.");
+        }
+    }
+
+    // Method to check the balance
+    public double getBalance() {
+        return balance;
+    }
+}
+
+// ATM class to handle user interactions
+class ATM {
+    private BankAccount account;
+    private Scanner scanner;
+
+    // Constructor to initialize ATM with a bank account
+    public ATM(BankAccount account) {
+        this.account = account;
+        this.scanner = new Scanner(System.in);
+    }
+
+    // Display menu and handle user input
+    public void start() {
+        while (true) {
+            System.out.println("\n🏧 ATM MENU");
+            System.out.println("1️⃣ Check Balance");
+            System.out.println("2️⃣ Deposit Money");
+            System.out.println("3️⃣ Withdraw Money");
+            System.out.println("4️⃣ Exit");
+            System.out.print("👉 Choose an option: ");
+
+            int choice = scanner.nextInt();
+            
+            switch (choice) {
+                case 1:
+                    System.out.println("💰 Your current balance is: $" + account.getBalance());
+                    break;
+                case 2:
+                    System.out.print("💵 Enter amount to deposit: $");
+                    double depositAmount = scanner.nextDouble();
+                    account.deposit(depositAmount);
+                    break;
+                case 3:
+                    System.out.print("🏧 Enter amount to withdraw: $");
+                    double withdrawAmount = scanner.nextDouble();
+                    account.withdraw(withdrawAmount);
+                    break;
+                case 4:
+                    System.out.println("🚪 Exiting ATM. Thank you for using our service!");
+                    scanner.close();
+                    return;
+                default:
+                    System.out.println("❌ Invalid option! Please choose a valid menu option.");
+            }
+        }
+    }
+}
+
+// Main class to run the program
+public class ATMInterface {
+    public static void main(String[] args) {
+        BankAccount userAccount = new BankAccount(500.0); // Initialize account with $500
+        ATM atm = new ATM(userAccount);
+        atm.start(); // Start ATM operations
+    }
+}
